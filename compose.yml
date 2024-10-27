@@ -1,0 +1,17 @@
+name: separovic-dsa
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+      args:
+        PHP_VERSION: "8.3"
+    image: ${COMPOSE_PROJECT_NAME}/php
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    volumes:
+      - .:/var/www/app
+      - ${COMPOSER_HOST_CACHE_DIR:-./var/composer}:/root/.composer/cache
+    environment:
+      X_MODE: ${X_MODE:-off}
+    stdin_open: true
+    tty: true
