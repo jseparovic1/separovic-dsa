@@ -14,7 +14,7 @@ use Separovic\Dsa\Tree\TrackingVisitor;
 use Separovic\Dsa\Tree\Visitor;
 
 #[CoversClass(UsingStack::class)]
-#[CoversClass(UsingRecursiveIterator::class)]
+#[CoversClass(UsingLevelOrderIterator::class)]
 final class LevelOrderTest extends TestCase
 {
     #[DataProvider('provideStrategies')]
@@ -25,7 +25,9 @@ final class LevelOrderTest extends TestCase
             children: [
                 new StringNode(
                     'Luke Skywalker (jedi-master)',
-                    children: [new StringNode('Anakin Skywalker (jedi-knight)')],
+                    children: [
+                        new StringNode('Anakin Skywalker (jedi-knight)')
+                    ],
                 ),
                 new StringNode('Rey Skywalker (jedi-master)'),
             ]
@@ -37,13 +39,13 @@ final class LevelOrderTest extends TestCase
 
         self::assertSame(
             [
-//                'Yoda (grand-master)',
-//                'Xo Lahru (grand-master)',
-//
-//                'Luke Skywalker (jedi-master)',
-//                'Rey Skywalker (jedi-master)',
-//
-//                'Anakin Skywalker (jedi-knight)',
+                'Yoda (grand-master)',
+                'Xo Lahru (grand-master)',
+
+                'Luke Skywalker (jedi-master)',
+                'Rey Skywalker (jedi-master)',
+
+                'Anakin Skywalker (jedi-knight)',
             ],
             array_map(fn(Node $node) => $node->getValue(), $visitor->visited)
         );
@@ -52,12 +54,12 @@ final class LevelOrderTest extends TestCase
     public static function provideStrategies(): Generator
     {
         yield 'It does level order traversal using queue.' => [
-            (new UsingStack($visitor = new TrackingVisitor())),
+            new UsingStack($visitor = new TrackingVisitor()),
             $visitor,
         ];
 
-         yield 'It does level order traversal using recursive iterator.' => [
-            (new UsingRecursiveIterator($visitor = new TrackingVisitor())),
+         yield 'It does level order traversal using level order iterator (basically same as queue).' => [
+             new UsingLevelOrderIterator($visitor = new TrackingVisitor()),
             $visitor,
         ];
     }

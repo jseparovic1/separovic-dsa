@@ -9,7 +9,7 @@ use Separovic\Dsa\Tree\NodeIterator;
 use Separovic\Dsa\Tree\StringNode;
 use Separovic\Dsa\Tree\Visitor;
 
-final readonly class UsingRecursiveIterator implements LevelOrder
+final readonly class UsingLevelOrderIterator implements LevelOrder
 {
     public function __construct(private Visitor $visitor)
     {
@@ -18,12 +18,7 @@ final readonly class UsingRecursiveIterator implements LevelOrder
     /** @param array<StringNode> $nodes */
     public function __invoke(array $nodes): void
     {
-        $iterableNodes = new RecursiveIteratorIterator(
-            new NodeIterator($nodes),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
-
-        foreach ($iterableNodes as $node) {
+        foreach (new LevelOrderIterator($nodes) as $node) {
             $this->visitor->visit($node);
         }
     }

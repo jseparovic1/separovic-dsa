@@ -9,7 +9,7 @@ use RecursiveArrayIterator;
 /**
  * @template TValue
  *
- * @implements RecursiveArrayIterator<TValue>
+ * @extends  RecursiveArrayIterator<TValue>
  */
 final class NodeIterator extends RecursiveArrayIterator
 {
