@@ -9,7 +9,7 @@ use Separovic\Dsa\Tree\Visitor;
 use SplDoublyLinkedList;
 use SplQueue;
 
-final readonly class UsingStack implements LevelOrder
+final readonly class UsingQueue implements LevelOrder
 {
     public function __construct(private Visitor $visitor)
     {

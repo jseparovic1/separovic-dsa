@@ -13,7 +13,7 @@ use Separovic\Dsa\Tree\StringNode;
 use Separovic\Dsa\Tree\TrackingVisitor;
 use Separovic\Dsa\Tree\Visitor;
 
-#[CoversClass(UsingStack::class)]
+#[CoversClass(UsingQueue::class)]
 #[CoversClass(UsingLevelOrderIterator::class)]
 final class LevelOrderTest extends TestCase
 {
@@ -54,7 +54,7 @@ final class LevelOrderTest extends TestCase
     public static function provideStrategies(): Generator
     {
         yield 'It does level order traversal using queue.' => [
-            new UsingStack($visitor = new TrackingVisitor()),
+            new UsingQueue($visitor = new TrackingVisitor()),
             $visitor,
         ];
 
