@@ -10,9 +10,7 @@ use Separovic\Dsa\Tree\Node;
 use SplQueue;
 use Traversable;
 
-/**
- * @implements IteratorAggregate<int, Node>
- */
+/** @implements IteratorAggregate<int, Node> */
 final readonly class LevelOrderIterator implements IteratorAggregate
 {
     /** @param list<Node> $nodes */
@@ -20,6 +18,7 @@ final readonly class LevelOrderIterator implements IteratorAggregate
     {
     }
 
+    /** @return Traversable<array{level: int, node: Node}> */
     public function getIterator(): Traversable
     {
         $queue = new SplQueue();
@@ -29,16 +28,22 @@ final readonly class LevelOrderIterator implements IteratorAggregate
             $queue->enqueue($node);
         }
 
+        $level = 0;
+
         while (!$queue->isEmpty()) {
-            $node = $queue->dequeue();
+            $nodesOnLevel = $queue->count();
 
-            yield $node; // Node first.
+            for ($i = 0; $i < $nodesOnLevel; $i++) {
+                $node = $queue->dequeue();
+                yield ['level' => $level, 'node' => $node]; // Node first.
 
-            // ... then its children.
-            foreach ($node->getChildren() as $child) {
-                $queue->enqueue($child);
+                // ... then its children.
+                foreach ($node->getChildren() as $child) {
+                    $queue->enqueue($child);
+                }
             }
-        }
 
+            $level++;
+        }
     }
 }

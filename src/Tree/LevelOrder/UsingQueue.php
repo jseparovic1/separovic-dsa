@@ -20,7 +20,6 @@ final readonly class UsingQueue implements LevelOrder
     {
         /** @var SplQueue<StringNode> $queue */
         $queue = new SplQueue();
-        $queue->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
 
         $add = function (array $items) use ($queue) {
             foreach ($items as $item) {
@@ -30,12 +29,19 @@ final readonly class UsingQueue implements LevelOrder
 
         $add($nodes);
 
+        $level = 0;
+
         while (!$queue->isEmpty()) {
-            $node = $queue->dequeue();
+            $nodesOnLevel = $queue->count();
 
-            $this->visitor->visit($node);
+            for ($i = 0; $i < $nodesOnLevel; $i++) {
+                $node = $queue->dequeue();
+                $this->visitor->visit($level, $node);
 
-            $add($node->children);
+                $add($node->children);
+            }
+
+            $level++;
         }
     }
 }

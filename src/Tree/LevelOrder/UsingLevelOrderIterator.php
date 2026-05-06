@@ -18,8 +18,8 @@ final readonly class UsingLevelOrderIterator implements LevelOrder
     /** @param array<StringNode> $nodes */
     public function __invoke(array $nodes): void
     {
-        foreach (new LevelOrderIterator($nodes) as $node) {
-            $this->visitor->visit($node);
+        foreach (new LevelOrderIterator($nodes) as ['level' => $level, 'node' => $node]) {
+            $this->visitor->visit($level, $node);
         }
     }
 }

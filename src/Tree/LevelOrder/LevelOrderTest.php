@@ -26,7 +26,7 @@ final class LevelOrderTest extends TestCase
                 new StringNode(
                     'Luke Skywalker (jedi-master)',
                     children: [
-                        new StringNode('Anakin Skywalker (jedi-knight)')
+                        new StringNode('Anakin Skywalker (jedi-knight)'),
                     ],
                 ),
                 new StringNode('Rey Skywalker (jedi-master)'),
@@ -39,15 +39,18 @@ final class LevelOrderTest extends TestCase
 
         self::assertSame(
             [
-                'Yoda (grand-master)',
-                'Xo Lahru (grand-master)',
+                '[lvl:0] Yoda (grand-master)',
+                '[lvl:0] Xo Lahru (grand-master)',
 
-                'Luke Skywalker (jedi-master)',
-                'Rey Skywalker (jedi-master)',
+                '[lvl:1] Luke Skywalker (jedi-master)',
+                '[lvl:1] Rey Skywalker (jedi-master)',
 
-                'Anakin Skywalker (jedi-knight)',
+                '[lvl:2] Anakin Skywalker (jedi-knight)',
             ],
-            array_map(fn(Node $node) => $node->getValue(), $visitor->visited)
+            array_map(
+                fn(VisitedNode $visited) => sprintf('[lvl:%d] %s', $visited->level, $visited->node->getValue()),
+                $visitor->visited,
+            )
         );
     }
 
@@ -58,8 +61,13 @@ final class LevelOrderTest extends TestCase
             $visitor,
         ];
 
-         yield 'It does level order traversal using level order iterator (basically same as queue).' => [
-             new UsingLevelOrderIterator($visitor = new TrackingVisitor()),
+        yield 'It does level order traversal using level order iterator (basically same as queue).' => [
+            new UsingLevelOrderIterator($visitor = new TrackingVisitor()),
+            $visitor,
+        ];
+
+        yield 'It does level order traversal using array.' => [
+            new UsingArray($visitor = new TrackingVisitor()),
             $visitor,
         ];
     }

@@ -8,5 +8,5 @@ namespace Separovic\Dsa\Tree;
 interface Visitor
 {
     /** @param Node<TValue> $node */
-    public function visit(Node $node): void;
+    public function visit(int $level, Node $node): void;
 }
