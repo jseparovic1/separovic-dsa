@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Separovic\Dsa\Graph\Problems;
-
-use SplQueue;
 
 final readonly class NumberOfIslandsUsingRecursiveDfs
 {
@@ -43,8 +40,9 @@ final readonly class NumberOfIslandsUsingRecursiveDfs
         for ($r = 0; $r < $rows; $r++) {
             for ($c = 0; $c < $cols; $c++) {
                 if ($grid[$r][$c] === '1') {
-                    $islands++;
+                    $grid[$r][$c] = '0'; // Visited.
                     $dfs($r, $c);
+                    $islands++;
                 }
             }
         }
