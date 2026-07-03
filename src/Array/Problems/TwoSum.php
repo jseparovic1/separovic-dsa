@@ -37,14 +37,14 @@ final readonly class TwoSum
     {
         $seen = [];
 
-        foreach ($nums as $i => $num) {
-            $complement = $target - $num;
+        for($i = 0; $i < count($nums); $i++) {
+            $complement = $target - $nums[$i];
 
             if (isset($seen[$complement])) {
                 return [$seen[$complement], $i];
             }
 
-            $seen[$num] = $i;
+            $seen[$nums[$i]] = $i;
         }
 
         return [];
